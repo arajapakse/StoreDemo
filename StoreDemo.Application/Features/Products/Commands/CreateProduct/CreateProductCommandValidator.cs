@@ -1,0 +1,55 @@
+﻿using FluentValidation;
+using StoreDemo.Application.Contracts.Persistence;
+using StoreDemo.Application.Features.Products.Common;
+
+namespace StoreDemo.Application.Features.Products.Commands.CreateProduct;
+
+public class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
+{
+    private ICategoryRepository _categoryRepository;
+
+    public CreateProductCommandValidator(ICategoryRepository categoryRepository)
+    {
+        _categoryRepository = categoryRepository;
+        this.CreateProductCommandRules();
+       
+    }
+
+    public void CreateProductCommandRules()
+    {
+        RuleFor(p => p.Name)
+            .NotEmpty().WithMessage("{PropertyName} is required.")
+            .NotNull()
+            .MaximumLength(100).WithMessage("{PropertyName} must not exceed {MaxLength} characters.");
+        RuleFor(p => p.Description)
+            .MaximumLength(500).WithMessage("{PropertyName} must not exceed {MaxLength} characters.");
+        RuleFor(p => p.Price)
+            .NotEmpty().WithMessage("{PropertyName} is required.")
+            .GreaterThan(0).WithMessage("{PropertyName} must be greater than 0.");
+        RuleFor(p => p.CategoryId)
+            .NotEmpty().WithMessage("{PropertyName} is required.")
+            .GreaterThan(0).WithMessage("{PropertyName} must be a valid category id.");
+        RuleFor(p => p.StockQuantity)
+            .NotEmpty().WithMessage("{PropertyName} is required.")
+            .GreaterThan(0).WithMessage("{PropertyName} must be greater than 0.");
+
+        RuleFor(p => p.CategoryId)
+        .MustAsync(CategoryExists).WithMessage("{PropertyName} does not exist.");
+
+    }
+
+    private async Task<bool> CategoryExists(int categoryId, CancellationToken cancellationToken)
+    {
+        var catalog = await _categoryRepository.GetByIdAsync(categoryId);
+
+        if (catalog != null)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+}
+
+

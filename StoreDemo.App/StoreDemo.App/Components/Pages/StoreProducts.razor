@@ -1,0 +1,14 @@
+﻿@page "/"
+
+@if (Products is null)
+{
+    <p><em>Loading ...</em></p>
+}
+else {
+    <div>
+        @foreach (var product in Products)
+        {
+            <ProductCard Product="product"></ProductCard>
+        }
+    </div>
+}
