@@ -11,9 +11,9 @@ internal class StoreApiService : IStoreApiService
     {
         _httpClient = httpClient;
     }
-    public async Task<List<ProductMV>> GetProducts()
+    public async Task<ProductsResponseMV> GetProducts()
     {
-        var products = await _httpClient.GetFromJsonAsync<List<ProductMV>>("/api/v1/Products");
+        var products = await _httpClient.GetFromJsonAsync<ProductsResponseMV> ("/api/v1/Products");
 
         return products;
     }

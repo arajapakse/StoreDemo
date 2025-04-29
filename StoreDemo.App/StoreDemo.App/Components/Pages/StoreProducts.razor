@@ -1,12 +1,12 @@
 ﻿@page "/"
 
-@if (Products is null)
+@if (ProductsResponse is null)
 {
     <p><em>Loading ...</em></p>
 }
 else {
     <div>
-        @foreach (var product in Products)
+        @foreach (var product in ProductsResponse.Result)
         {
             <ProductCard Product="product"></ProductCard>
         }

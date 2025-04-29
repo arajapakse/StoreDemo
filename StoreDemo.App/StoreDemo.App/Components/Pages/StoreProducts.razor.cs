@@ -9,13 +9,13 @@ public partial class StoreProducts
     [Inject]
     private IStoreApiService StoreApiService { get; set; }
 
-    private List<ProductMV> Products = default!;
+    private ProductsResponseMV ProductsResponse = default!;
 
     protected override async Task OnInitializedAsync()
     {
         if (StoreApiService is not null)
         {
-            Products = await StoreApiService.GetProducts();
+            ProductsResponse = await StoreApiService.GetProducts();
         }
     }
 }

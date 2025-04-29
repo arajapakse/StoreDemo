@@ -4,5 +4,5 @@ namespace StoreDemo.App.Services;
 
 internal interface IStoreApiService
 {
-    Task<List<ProductMV>> GetProducts();
+    Task<ProductsResponseMV> GetProducts();
 }
